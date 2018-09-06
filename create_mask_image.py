@@ -1,7 +1,12 @@
-import scipy.misc as misc
-import numpy as np
-import cv2
 import os
+
+import cv2
+import numpy as np
+import scipy.misc as misc
+import tensorflow as tf
+import tqdm
+
+logger = tf.logging
 
 
 def draw_line(imraw, num_line):
@@ -70,16 +75,18 @@ def save_mask(num_mask, min_units, max_units, new_mask_path, im_file,
     mask_LR = draw_rect(mask_L, rects, 40)  ##  draw  line and rect
     mask_LRO = draw_oval(mask_LR, ovals)
     mask_list.append(draw_circle(mask_LRO, cicles))
-    ###   save masks
+
   for j in range(num_mask):
     mask_to_save = np.ones([512, 512, 3]).astype(np.float32)
     for i in range(3):
       mask_to_save[:, :, i] = mask_to_save[:, :, i] * mask_list[j]
     name = new_mask_path + 'mask' + str(j) + '.jpg'
     misc.imsave(name, mask_to_save)
-    ###   save im_with_mask
+    logger.info("Saved {} mask image as {}".format(j, name))
+
   im_dirs = [im_file + i_n for i_n in os.listdir(im_file)]
-  for im_dir in im_dirs:
+  logger.info("Applying masks to original images...")
+  for im_dir in tqdm.tqdm(im_dirs):
     imraw = misc.imread(im_dir)
     im = misc.imresize(imraw, [512, 512])
     for i in range(num_mask):
@@ -87,6 +94,3 @@ def save_mask(num_mask, min_units, max_units, new_mask_path, im_file,
       im_mask_name = new_im_path + (im_dir.split('.')[0]).split('/')[-1] + str(
         i) + '.jpg'
       misc.imsave(im_mask_name, im_mask)
-
-# save_mask(num_mask, min_units, max_units, new_mask_path, im_file, new_im_path)
-# save_mask(6, 5, 12, 'D:/nvidainpaint/我写的mask生成程序结果/masks/', 'D:/nvidainpaint/我写的mask生成程序结果/imfiles/', 'D:/nvidainpaint/我写的mask生成程序结果/imfilenew/')

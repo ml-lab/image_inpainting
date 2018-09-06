@@ -2,9 +2,20 @@
 'Image Inpainting for Irregular Holes Using Partial Convolutions' first tensorflow primary instance, fully implemented using tensorflow, without modifying the source code.<br>
 
 Original paper: [Image Inpainting for Irregular Holes Using Partial Convolutions](https://arxiv.org/pdf/1804.07723.pdf)
+
 Demo on YouTube: [link](https://www.youtube.com/watch?v=gg0F5JjKmhA)
 ## Partial Convolution
-Use curr_bin_mask to represent the mask of the current binary; conved_mask represents the result of convolution of the binary mask, corresponding to sum(M) in the text; new_bin_mask represents the new binary mask after convolution, and the update rule is:<br>&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;((conved_mask==0)==0)<br>therefore, the local convolution is calculated as follows:<br>&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;Pconv(x) = (Conv(x*curr_bin_mask)*conved_mask+b)*new_bin_mask<br>The operation with the new mask is to ensure that the invalid input is zero, as described in the text.
+Use curr_bin_mask to represent the mask of the current binary; conved_mask represents the result of convolution of the binary mask, corresponding to sum(M) in the text; new_bin_mask represents the new binary mask after convolution, and the update rule is:
+```
+((conved_mask==0)==0) 
+```
+therefore, the local convolution is calculated as follows:
+```
+Pconv(x) = (Conv(x*curr_bin_mask)*conved_mask+b)*new_bin_mask
+```
+
+The operation with the new mask is to ensure that the invalid input is zero, as described in the text.
+
 ## Network structure
 [U_net structure diagram:](https://arxiv.org/abs/1411.4038)<br>&#8195;![image](https://github.com/Rongpeng-Lin/PConv_in_tf/blob/master/U_net/u_net_Struct.png)<br>Replace convolution with local convolution<br>
 ## Mask generation
@@ -21,7 +32,7 @@ new_im_path:  The mask acts on the path after the original image,this is the tra
 ```
 Example of use:
 ```
-python config_im_mask.py \
+python generate_image_mask.py \
     --num_mask=6 \
     --min_units=5 \
     --max_units=12 \
