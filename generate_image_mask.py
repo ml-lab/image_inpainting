@@ -32,12 +32,6 @@ def maybe_create_paths(paths):
     logger.info("Created {} path".format(path))
 
 
-# def create_default_path(path):
-#   path = os.path.join(home, path)
-#
-#   return path
-
-
 def build_parser():
   parser = ArgumentParser()
   parser.add_argument('--num_mask', type=int,

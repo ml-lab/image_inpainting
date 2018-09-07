@@ -1,8 +1,9 @@
 ###  out_im: 4_dim trnsor   ####   cacu_loss
 ###  raw_im: 4_dim trnsor
 ###  bin_mask: 2_dim array
-import tensorflow as tf
 import functools
+
+import tensorflow as tf
 
 
 def get_gram(x):

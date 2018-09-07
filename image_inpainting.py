@@ -6,7 +6,7 @@ import os
 
 from cacu_loss import *
 from get_input import *
-from ops import *
+from layers import *
 
 
 class ImageInpainting:

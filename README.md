@@ -23,22 +23,26 @@ Unlike the original,I used opencv to generate a mask and set the invalid part in
 ## Use
 ### Generate images and masks:
 ```
-num_mask:  the number of generated masks
-min_units:  the lower limit of the number of occlusion units in the mask
-max_units:  the upper limit of the occlusion unit in the mask
-new_mask_path:  the storage path of the generated mask
-im_file:  the original image path
-new_im_path:  The mask acts on the path after the original image,this is the training sample we generated.
+num_mask:  the number of generated masks [required]
+min_units:  the lower limit of the number of occlusion units in the mask [required]
+max_units:  the upper limit of the occlusion unit in the mask [required]
+masks_path:  the storage path of the generated mask [optional], default=~/inpainting/masks/
+original_images_path:  the original image path [optional], default=~/inpainting/original-images/
+masked_images_path:  The mask acts on the path after the original image,this is the training sample we generated. [optional], default=~/inpainting/masked-images/
 ```
 Example of use:
 ```
+PATH_TO_MASK=path/to/mask
+PATH_TO_IMAGES=path/to/images
+PATH_TO_MASKED_IMAGES=path/to/mased/images
+
 python generate_image_mask.py \
     --num_mask=6 \
     --min_units=5 \
     --max_units=12 \
-    --new_mask_path="D:/inpaint/masks/" \
-    --im_file="D:/inpaint/imfiles/" \
-    --new_im_path="D:/inpaint/imfilenew/"
+    --masks_path=$PATH_TO_MASK \
+    --original_images_path=$PATH_TO_IMAGES \
+    --masked_images_path=$PATH_TO_MASKED_IMAGES
 ```
 ### Training:
 ```

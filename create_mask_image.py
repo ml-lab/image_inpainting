@@ -85,6 +85,7 @@ def save_mask(num_mask, min_units, max_units, new_mask_path, im_file,
     logger.info("Saved {} mask image as {}".format(j, name))
 
   im_dirs = [im_file + i_n for i_n in os.listdir(im_file)]
+  logger.info("Number of original images : %d", len(im_dirs))
   logger.info("Applying masks to original images...")
   for im_dir in tqdm.tqdm(im_dirs):
     imraw = misc.imread(im_dir)
