@@ -5,6 +5,10 @@ import tensorflow as tf
 
 from utils import tqdm_hook
 
+tf.logging.set_verbosity(tf.logging.INFO)
+
+logger = tf.logging
+
 _IMAGENET_SMALL_ROOT_URL = "http://image-net.org/small/"
 _IMAGENET_SMALL_URLS = ["train_32x32.tar", "valid_32x32.tar"]
 _IMAGENET_SMALL_TRAIN_PREFIX = "train_32x32"
@@ -18,7 +22,7 @@ _IMAGENET_MEDIUM_EVAL_PREFIX = "valid_64x64"
 _IMAGENET_MEDIUM_IMAGE_SIZE = 64
 
 
-def download_image_net(directory, filename, uri):
+def download(directory, filename, uri):
   """Download filename from uri unless it's already in directory.
 
   Copies a remote file to local if that local file does not already exist.  If
@@ -39,10 +43,10 @@ def download_image_net(directory, filename, uri):
   tf.gfile.MakeDirs(directory)
   filepath = os.path.join(directory, filename)
   if tf.gfile.Exists(filepath):
-    tf.logging.info("Not downloading, file already found: %s" % filepath)
+    logger.info("Not downloading, file already found: %s" % filepath)
     return filepath
 
-  tf.logging.info("Downloading %s to %s" % (uri, filepath))
+  logger.info("Downloading %s to %s" % (uri, filepath))
   try:
     tf.gfile.Copy(uri, filepath)
   except tf.errors.UnimplementedError:
@@ -62,10 +66,7 @@ def download_image_net(directory, filename, uri):
     else:
       raise ValueError("Unrecognized URI: " + filepath)
   statinfo = os.stat(filepath)
-  tf.logging.info("Successfully downloaded %s, %s bytes." %
+  logger.info("Successfully downloaded %s, %s bytes." %
                   (filename, statinfo.st_size))
   return filepath
 
-
-# download_image_net("/home/tomek/inpainint/test", "train_32x32",
-#                    "http://image-net.org/small/train_32x32.tar")
